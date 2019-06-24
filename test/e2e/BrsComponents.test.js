@@ -119,9 +119,6 @@ describe("end to end brightscript functions", () => {
             "2",
             "children size: ",
             "2",
-            "going to mock an object",
-            "finished mocking an object",
-            "mocked",
         ]);
     });
 

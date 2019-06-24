@@ -27,6 +27,16 @@ describe("end to end brightscript functions", () => {
             "marking mock timespan",
             "mocked timespan should return 8: ",
             "8",
+            "create object regex:",
+            "roRegex",
+            "mock object regex:",
+            "roAssociativeArray",
+            "mocked node id:",
+            "node-id",
+            "mocked node name:",
+            "node-name",
+            "mocked node child index:",
+            "333",
         ]);
     });
 });
