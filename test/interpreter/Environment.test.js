@@ -45,6 +45,13 @@ describe("Environment", () => {
         expect(env.get(identifier("m"))).toBe(newM);
     });
 
+    it("gets and sets from Mock scope", () => {
+        let val = new BrsString("mockScope");
+        env.define(Scope.Mock, "_brs_", val);
+
+        expect(env.get(identifier("_brs_"))).toBe(val);
+    });
+
     it("gets the current line number", () => {
         let lineNum = {
             kind: Lexeme.Identifier,
@@ -112,5 +119,13 @@ describe("Environment", () => {
         expect(subEnv.has(identifier("moduleScoped"))).toBe(true);
         expect(subEnv.has(identifier("globalScoped"))).toBe(true);
         expect(subEnv.has(identifier("m"))).toBe(true);
+    });
+
+    it("gets & sets mock objects on the mock scope", () => {
+        let obj = new RoAssociativeArray([]);
+        env.setMock("mock1", obj);
+
+        result = env.getMock("mock1");
+        expect(result).toBe(obj);
     });
 });

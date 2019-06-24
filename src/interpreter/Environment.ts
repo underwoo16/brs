@@ -38,11 +38,10 @@ export class Environment {
      */
     private function = new Map<string, BrsType>();
     /**
-     * Functions that are always accessible.
+     * The mockComponent function and any mocks that are setup currently.
      * @see Scope.Mock
      */
     private mock = new Map<string, BrsType>();
-
     /** The BrightScript `m` pointer, analogous to JavaScript's `this` pointer. */
     private mPointer = new RoAssociativeArray([]);
     /**
@@ -193,10 +192,19 @@ export class Environment {
         return newEnvironment;
     }
 
+    /**
+     * retrieves mocked object if it exists
+     * @param objName the object to mock
+     */
     public getMock(objName: string): BrsType {
         return this.mock.get(objName) || BrsInvalid.Instance;
     }
 
+    /**
+     * places the mockValue object into list of mocks
+     * @param objName the object we are mocking
+     * @param mockValue the mock to return
+     */
     public setMock(objName: string, mockValue: BrsType): void {
         this.mock.set(objName.toLowerCase(), mockValue);
     }
