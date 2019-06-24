@@ -183,6 +183,7 @@ export class Environment {
         newEnvironment.module = this.module;
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mock = this.mock;
+        newEnvironment.mocks = this.mocks;
 
         return newEnvironment;
     }

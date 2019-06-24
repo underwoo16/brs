@@ -8,7 +8,6 @@ sub Main()
         end function)
     })
     mockTimespan = createObject("roTimespan")
-    print "created mock: "mockTimespan
     mockTimespan.mark()
     print "mocked timespan should return 8: " mockTimespan.totalMilliseconds()  ' => 8
 end sub
