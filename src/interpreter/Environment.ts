@@ -192,6 +192,6 @@ export class Environment {
     }
 
     public setMock(objName: string, mockValue: BrsType): void {
-        this.mocks.set(objName, mockValue);
+        this.mocks.set(objName.toLowerCase(), mockValue);
     }
 }

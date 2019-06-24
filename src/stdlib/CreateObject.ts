@@ -18,8 +18,8 @@ export const CreateObject = new Callable("CreateObject", {
     impl: (interpreter: Interpreter, objName: BrsString, ...additionalArgs: BrsType[]) => {
         let objToCreate = objName.value.toLowerCase();
 
-        let possibleMock = interpreter.environment.getMock(objName.toString());
-        if (possibleMock) {
+        let possibleMock = interpreter.environment.getMock(objToCreate);
+        if (!(possibleMock instanceof BrsInvalid)) {
             return possibleMock;
         }
 
