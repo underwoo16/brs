@@ -55,6 +55,11 @@ sub main()
     print "parent child count: " parentNode.getChildCount()        ' => 2
     children = parentNode.getChildren(-1, 0)
     print "children size: " children.count()                       ' => 2
+
+    print "going to mock an object"
+    result = _brs_.mockComponent("Poster", {})
+    print "finished mocking an object"
+    print result                                                    ' => mocked
 end sub
 
 sub onSomethingChanged()

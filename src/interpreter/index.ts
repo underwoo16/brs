@@ -27,6 +27,7 @@ import { Expr, Stmt } from "../parser";
 import { BrsError, TypeMismatch } from "../Error";
 
 import * as StdLib from "../stdlib";
+import { mockComponent } from "../mocks/mockComponent";
 
 import { Scope, Environment, NotFound } from "./Environment";
 import { OutputProxy } from "./OutputProxy";
@@ -37,6 +38,7 @@ import MemoryFileSystem from "memory-fs";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
 import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 import { DottedGet } from "../parser/Expression";
+import { Abs } from "../stdlib";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
@@ -116,6 +118,11 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             .forEach((func: Callable) =>
                 this._environment.define(Scope.Global, func.name || "", func)
             );
+
+        let _brs_ = new RoAssociativeArray([
+            { name: new BrsString("mockComponent"), value: mockComponent },
+        ]);
+        this._environment.define(Scope.Mock, "_brs_", _brs_);
     }
 
     /**
