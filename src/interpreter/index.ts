@@ -27,7 +27,7 @@ import { Expr, Stmt } from "../parser";
 import { BrsError, TypeMismatch } from "../Error";
 
 import * as StdLib from "../stdlib";
-import { mockComponent } from "../mocks/mockComponent";
+import { _brs_ } from "../mocks/mockComponent";
 
 import { Scope, Environment, NotFound } from "./Environment";
 import { OutputProxy } from "./OutputProxy";
@@ -119,9 +119,6 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
                 this._environment.define(Scope.Global, func.name || "", func)
             );
 
-        let _brs_ = new RoAssociativeArray([
-            { name: new BrsString("mockComponent"), value: mockComponent },
-        ]);
         this._environment.define(Scope.Mock, "_brs_", _brs_);
     }
 

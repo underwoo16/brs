@@ -43,9 +43,6 @@ export class Environment {
      */
     private mock = new Map<string, BrsType>();
 
-    // TODO: comment this
-    private mocks = new Map<string, BrsType>();
-
     /** The BrightScript `m` pointer, analogous to JavaScript's `this` pointer. */
     private mPointer = new RoAssociativeArray([]);
 
@@ -183,16 +180,15 @@ export class Environment {
         newEnvironment.module = this.module;
         newEnvironment.mPointer = this.mPointer;
         newEnvironment.mock = this.mock;
-        newEnvironment.mocks = this.mocks;
 
         return newEnvironment;
     }
 
     public getMock(objName: string): BrsType {
-        return this.mocks.get(objName) || BrsInvalid.Instance;
+        return this.mock.get(objName) || BrsInvalid.Instance;
     }
 
     public setMock(objName: string, mockValue: BrsType): void {
-        this.mocks.set(objName.toLowerCase(), mockValue);
+        this.mock.set(objName.toLowerCase(), mockValue);
     }
 }

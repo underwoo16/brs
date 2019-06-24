@@ -2,16 +2,14 @@ import {
     BrsType,
     ValueKind,
     Callable,
-    Int32,
     BrsString,
     StdlibArgument,
-    RoArray,
     BrsInvalid,
+    RoAssociativeArray,
 } from "../brsTypes";
-import * as Expr from "../parser/Expression";
 import { Interpreter } from "../interpreter";
 
-export const mockComponent = new Callable("mockComponent", {
+let mockComponent = new Callable("mockComponent", {
     signature: {
         args: [
             new StdlibArgument("objToMock", ValueKind.String),
@@ -24,3 +22,7 @@ export const mockComponent = new Callable("mockComponent", {
         return BrsInvalid.Instance;
     },
 });
+
+export const _brs_ = new RoAssociativeArray([
+    { name: new BrsString("mockComponent"), value: mockComponent },
+]);
