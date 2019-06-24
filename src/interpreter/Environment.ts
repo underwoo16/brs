@@ -1,5 +1,5 @@
 import { Identifier } from "../lexer";
-import { BrsType, RoAssociativeArray, Int32 } from "../brsTypes";
+import { BrsType, RoAssociativeArray, Int32, BrsInvalid } from "../brsTypes";
 
 /** The logical region from a particular variable or function that defines where it may be accessed from. */
 export enum Scope {
@@ -42,6 +42,10 @@ export class Environment {
      * @see Scope.Mock
      */
     private mock = new Map<string, BrsType>();
+
+    // TODO: comment this
+    private mocks = new Map<string, BrsType>();
+
     /** The BrightScript `m` pointer, analogous to JavaScript's `this` pointer. */
     private mPointer = new RoAssociativeArray([]);
 
@@ -181,5 +185,13 @@ export class Environment {
         newEnvironment.mock = this.mock;
 
         return newEnvironment;
+    }
+
+    public getMock(objName: string): BrsType {
+        return this.mocks.get(objName) || BrsInvalid.Instance;
+    }
+
+    public setMock(objName: string, mockValue: BrsType): void {
+        this.mocks.set(objName, mockValue);
     }
 }

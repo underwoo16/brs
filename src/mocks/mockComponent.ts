@@ -20,7 +20,7 @@ export const mockComponent = new Callable("mockComponent", {
         returns: ValueKind.Dynamic,
     },
     impl: (interpreter: Interpreter, objToMock: BrsType, mock: BrsType) => {
-        console.log("mocking an object");
-        return new BrsString("mocked");
+        interpreter.environment.setMock(objToMock.toString(), mock);
+        return BrsInvalid.Instance;
     },
 });

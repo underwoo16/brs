@@ -16,7 +16,14 @@ export const CreateObject = new Callable("CreateObject", {
         returns: ValueKind.Dynamic,
     },
     impl: (interpreter: Interpreter, objName: BrsString, ...additionalArgs: BrsType[]) => {
-        let ctor = BrsObjects.get(objName.value.toLowerCase());
+        let objToCreate = objName.value.toLowerCase();
+
+        let possibleMock = interpreter.environment.getMock(objName.toString());
+        if (possibleMock) {
+            return possibleMock;
+        }
+
+        let ctor = BrsObjects.get(objToCreate);
         return ctor ? ctor(...additionalArgs) : BrsInvalid.Instance;
     },
 });
