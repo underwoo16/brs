@@ -38,7 +38,6 @@ import MemoryFileSystem from "memory-fs";
 import { BrsComponent } from "../brsTypes/components/BrsComponent";
 import { isBoxable, isUnboxable } from "../brsTypes/Boxing";
 import { DottedGet } from "../parser/Expression";
-import { Abs } from "../stdlib";
 
 /** The set of options used to configure an interpreter's execution. */
 export interface ExecutionOptions {
