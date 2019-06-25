@@ -27,6 +27,10 @@ export class BrsComponent {
         );
     }
 
+    registerMethod(index: string, method: Callable) {
+        this.methods.set(index, method);
+    }
+
     getMethod(index: string): Callable | undefined {
         return this.methods.get(index.toLowerCase());
     }

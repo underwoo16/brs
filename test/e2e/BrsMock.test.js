@@ -30,7 +30,7 @@ describe("end to end brightscript functions", () => {
             "create object regex:",
             "roRegex",
             "mock object regex:",
-            "roAssociativeArray",
+            "roSGNode",
             "mocked node id:",
             "node-id",
             "mocked node name:",

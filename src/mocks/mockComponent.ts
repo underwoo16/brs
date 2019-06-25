@@ -6,8 +6,10 @@ import {
     StdlibArgument,
     BrsInvalid,
     RoAssociativeArray,
+    RoSGNode,
 } from "../brsTypes";
 import { Interpreter } from "../interpreter";
+import { AAMember, Call } from "../parser/Expression";
 
 let mockComponent = new Callable("mockComponent", {
     signature: {
@@ -17,8 +19,19 @@ let mockComponent = new Callable("mockComponent", {
         ],
         returns: ValueKind.Dynamic,
     },
-    impl: (interpreter: Interpreter, objToMock: BrsType, mock: BrsType) => {
-        interpreter.environment.setMock(objToMock.toString(), mock);
+    impl: (interpreter: Interpreter, objToMock: BrsType, mock: RoAssociativeArray) => {
+        let mockNode = new RoSGNode([]);
+        let mockElements = mock.getValue();
+        mockElements.forEach((value: BrsType, key: string) => {
+            if (value instanceof Callable) {
+                // register callable method on mockNode
+                mockNode.registerMethod(key, value);
+            } else {
+                // add field to mockNode
+                mockNode.set(new BrsString(key), value);
+            }
+        });
+        interpreter.environment.setMock(objToMock.toString(), mockNode);
         return BrsInvalid.Instance;
     },
 });
