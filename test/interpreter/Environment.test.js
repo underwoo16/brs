@@ -77,40 +77,48 @@ describe("Environment", () => {
         let foo = new BrsString("function scope");
         let bar = new BrsString("module scope");
         let baz = new BrsString("global scope");
+        let rah = new BrsString("mock scope");
 
         env.define(Scope.Function, "foo", foo);
         env.define(Scope.Module, "bar", bar);
         env.define(Scope.Global, "baz", baz);
+        env.define(Scope.Mock, "rah", rah);
 
         expect(env.has(identifier("m"))).toBe(true);
 
         expect(env.has(identifier("foo"))).toBe(true);
         expect(env.has(identifier("bar"))).toBe(true);
         expect(env.has(identifier("baz"))).toBe(true);
+        expect(env.has(identifier("rah"))).toBe(true);
     });
 
     it("removes only from Function scope", () => {
         let foo = new BrsString("function scope");
         let bar = new BrsString("module scope");
         let baz = new BrsString("global scope");
+        let rah = new BrsString("mock scope");
 
         env.define(Scope.Function, "foo", foo);
         env.define(Scope.Module, "bar", bar);
         env.define(Scope.Global, "baz", baz);
+        env.define(Scope.Mock, "rah", rah);
 
         env.remove("foo");
         env.remove("bar");
         env.remove("baz");
+        env.remove("rah");
 
         expect(env.has(identifier("foo"))).toBe(false);
         expect(env.has(identifier("bar"))).toBe(true);
         expect(env.has(identifier("baz"))).toBe(true);
+        expect(env.has(identifier("rah"))).toBe(true);
     });
 
     it("creates sub-environments without Function-scoped variables", () => {
         env.define(Scope.Function, "funcScoped", new BrsString("funcScoped"));
         env.define(Scope.Module, "moduleScoped", new BrsString("module-scoped"));
         env.define(Scope.Global, "globalScoped", new BrsString("global-scoped"));
+        env.define(Scope.Mock, "mockScoped", new BrsString("mock-scoped"));
         env.setM(new RoAssociativeArray([{ name: new BrsString("id"), value: new Int32(679) }]));
 
         let subEnv = env.createSubEnvironment();
@@ -119,6 +127,7 @@ describe("Environment", () => {
         expect(subEnv.has(identifier("moduleScoped"))).toBe(true);
         expect(subEnv.has(identifier("globalScoped"))).toBe(true);
         expect(subEnv.has(identifier("m"))).toBe(true);
+        expect(subEnv.has(identifier("mockScoped"))).toBe(true);
     });
 
     it("gets & sets mock objects on the mock scope", () => {
