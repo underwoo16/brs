@@ -19,18 +19,7 @@ let mockComponent = new Callable("mockComponent", {
         returns: ValueKind.Dynamic,
     },
     impl: (interpreter: Interpreter, objToMock: BrsType, mock: RoAssociativeArray) => {
-        let mockNode = new MockNode();
-        let mockElements = mock.getValue();
-        mockElements.forEach((value: BrsType, key: string) => {
-            if (value instanceof Callable) {
-                // register callable method on mockNode
-                mockNode.registerNewMethod(key, value);
-            } else {
-                // add field to mockNode
-                mockNode.set(new BrsString(key), value);
-            }
-        });
-        interpreter.environment.setMock(objToMock.toString(), mockNode);
+        interpreter.environment.setMock(objToMock.toString(), mock);
         return BrsInvalid.Instance;
     },
 });

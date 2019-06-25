@@ -39,6 +39,10 @@ describe("end to end brightscript functions", () => {
             "node-name",
             "mocked node child index:",
             "333",
+            "second mock node id is not mutated by first mock:",
+            "id",
+            "second mock node name is not mutated by first mock:",
+            "name",
         ]);
     });
 });

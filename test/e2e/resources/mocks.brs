@@ -37,7 +37,9 @@ sub Main()
     _brs_.mockComponent("fakeType", {
         getChild: (function(index as integer)
             return { index: index }
-        end function)
+        end function),
+        id: "id",
+        name: "name"
     })
     mockNode = createObject("roSGNode", "fakeType")
     mockNode.id = "node-id"
@@ -47,6 +49,10 @@ sub Main()
     print "mocked node id:" mockNode.id                     ' => node-id
     print "mocked node name:" mockNode.name                 ' => node-name
     print "mocked node child index:" mockChild.index        ' => 333
+
+    secondMockNode = createObject("roSGNode", "fakeType")
+    print "second mock node id is not mutated by first mock:" secondMockNode.id     ' => id
+    print "second mock node name is not mutated by first mock:" secondMockNode.name ' => name
 end sub
 
 sub onNameChanged()

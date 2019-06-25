@@ -1,11 +1,19 @@
-import { RoSGNode, Callable } from "../brsTypes";
+import { RoSGNode, Callable, RoAssociativeArray, BrsType, BrsString } from "../brsTypes";
 
 export class MockNode extends RoSGNode {
-    constructor() {
+    constructor(mock: RoAssociativeArray) {
         super([]);
-    }
 
-    registerNewMethod(index: string, method: Callable) {
-        this.registerMethod(index, method);
+        // set up the fields here
+        let mockElements = mock.getValue();
+        mockElements.forEach((value: BrsType, key: string) => {
+            if (value instanceof Callable) {
+                // register callable method on mockNode
+                this.registerMethod(key, value);
+            } else {
+                // add field to mockNode
+                this.set(new BrsString(key), value);
+            }
+        });
     }
 }

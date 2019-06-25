@@ -1,7 +1,16 @@
-import { Callable, ValueKind, BrsInvalid, BrsString, BrsType, StdlibArgument } from "../brsTypes";
+import {
+    Callable,
+    ValueKind,
+    BrsInvalid,
+    BrsString,
+    BrsType,
+    StdlibArgument,
+    RoAssociativeArray,
+} from "../brsTypes";
 import { BrsObjects } from "../brsTypes/components/BrsObjects";
 import * as Expr from "../parser/Expression";
 import { Interpreter } from "../interpreter";
+import { MockNode } from "../mocks/MockNode";
 
 /** Creates a new instance of a given brightscript component (e.g. roAssociativeArray) */
 export const CreateObject = new Callable("CreateObject", {
@@ -27,8 +36,8 @@ export const CreateObject = new Callable("CreateObject", {
         }
 
         let possibleMock = interpreter.environment.getMock(objToMock);
-        if (!(possibleMock instanceof BrsInvalid)) {
-            return possibleMock;
+        if (possibleMock instanceof RoAssociativeArray) {
+            return new MockNode(possibleMock);
         }
 
         let ctor = BrsObjects.get(objName.value.toLowerCase());
