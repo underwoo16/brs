@@ -31,6 +31,8 @@ describe("end to end brightscript functions", () => {
             "roRegex",
             "mock object regex:",
             "roSGNode",
+            "mock poster name:",
+            "poster",
             "mocked node id:",
             "node-id",
             "mocked node name:",

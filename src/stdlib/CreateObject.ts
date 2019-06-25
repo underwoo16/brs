@@ -16,14 +16,22 @@ export const CreateObject = new Callable("CreateObject", {
         returns: ValueKind.Dynamic,
     },
     impl: (interpreter: Interpreter, objName: BrsString, ...additionalArgs: BrsType[]) => {
-        let objToCreate = objName.value.toLowerCase();
+        let objToMock = objName.value.toLowerCase();
 
-        let possibleMock = interpreter.environment.getMock(objToCreate);
+        if (
+            objToMock === "rosgnode" &&
+            additionalArgs[0] &&
+            !(additionalArgs[0] instanceof BrsInvalid)
+        ) {
+            objToMock = additionalArgs[0].toString().toLowerCase();
+        }
+
+        let possibleMock = interpreter.environment.getMock(objToMock);
         if (!(possibleMock instanceof BrsInvalid)) {
             return possibleMock;
         }
 
-        let ctor = BrsObjects.get(objToCreate);
+        let ctor = BrsObjects.get(objName.value.toLowerCase());
         return ctor ? ctor(...additionalArgs) : BrsInvalid.Instance;
     },
 });

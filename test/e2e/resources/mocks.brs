@@ -26,13 +26,20 @@ sub Main()
     mockTimespan.observeField("name", "onNameChanged")
     mockTimespan.name = "updated name"
 
+    ' testing createObject("roSGNode", SOME_TYPE)
+    _brs_.mockComponent("poster", {
+        name: "poster"
+    })
+    mockPoster = createObject("roSGNode", "Poster")
+    print "mock poster name:" mockPoster.name
+
     ' testing mock objects with fields, functions and parameters
-    _brs_.mockComponent("roSGNode", {
+    _brs_.mockComponent("fakeType", {
         getChild: (function(index as integer)
             return { index: index }
         end function)
     })
-    mockNode = createObject("roSGNode", "Node")
+    mockNode = createObject("roSGNode", "fakeType")
     mockNode.id = "node-id"
     mockNode.name = "node-name"
     mockChild = mockNode.getChild(333)
