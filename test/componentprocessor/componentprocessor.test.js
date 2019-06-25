@@ -1,7 +1,6 @@
 const xmldoc = require("xmldoc");
 const { componentprocessor } = require("brs");
 const { getComponentDefinitions, ComponentDefinition } = require("../../lib/componentprocessor");
-const { Interpreter } = require("../../../lib/interpreter");
 
 jest.mock("fast-glob");
 jest.mock("fs");
