@@ -37,7 +37,7 @@ describe.only("component parsing support", () => {
             expect(badDef.parse()).rejects.toMatch(badDef);
         });
 
-        it("registers a component definition", async () => {
+        it("parses well-defined component definition", async () => {
             const goodDefXml = `
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="GoodComponent" extends="BaseComponent">
