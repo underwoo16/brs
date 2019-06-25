@@ -34,7 +34,7 @@ describe.only("component parsing support", () => {
             );
 
             let badDef = new ComponentDefinition("/some/valid/path.xml");
-            expect(badDef.parse()).rejects.toMatch(badDef);
+            expect(badDef.parse()).rejects.toBe(badDef);
         });
 
         it("parses well-defined component definition", async () => {

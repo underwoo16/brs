@@ -6,7 +6,7 @@ const readFile = promisify(fs.readFile);
 
 import { Lexer } from "./lexer";
 import * as PP from "./preprocessor";
-import { getComponentDefinitions, ComponentDefinition } from "./componentprocessor";
+import { getComponentDefinitions } from "./componentprocessor";
 import { Parser } from "./parser";
 import { Interpreter, ExecutionOptions, defaultExecutionOptions } from "./interpreter";
 import * as BrsError from "./Error";
@@ -99,8 +99,8 @@ export async function execute(filenames: string[], options: Partial<ExecutionOpt
     // save each custom component def into a global map so we can access it
     // at run time when we call `createObjectByType`
     nodeDefs.map(node => {
-        if (node.isFulfilled) {
-            interpreter.environment.nodeDefMap.set(node.value!.name, node.value!);
+        if (node.isFulfilled && !node.isRejected) {
+            interpreter.environment.nodeDefMap.set(node.value!.name!, node.value!);
         }
     });
     return interpreter.exec(statements);

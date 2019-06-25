@@ -9,7 +9,7 @@ import * as fg from "fast-glob";
 export class ComponentDefinition {
     public contents?: string;
     public xmlNode?: XmlDocument;
-    public name: string = "";
+    public name?: string;
 
     constructor(readonly xmlPath: string) {}
 
