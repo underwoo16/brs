@@ -106,7 +106,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             // this.appendchildren,
             // this.getchild,
             // this.insertchild,
-            // this.removechildrenindex,
+            this.removechildrenindex,
             // this.removechildindex,
             // this.update????
             // this.reparent,
@@ -677,14 +677,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     /**
-     * If the subject node has a child node in the index position, replace that child 
+     * If the subject node has a child node in the index position, replace that child
      * node with the newChild node in the subject node list of children, otherwise do nothing.
      */
     private replacechild = new Callable("replacechild", {
         signature: {
             args: [
                 new StdlibArgument("newchild", ValueKind.Dynamic),
-                new StdlibArgument("index", ValueKind.Int32)
+                new StdlibArgument("index", ValueKind.Int32),
             ],
             returns: ValueKind.Boolean,
         },
@@ -702,9 +702,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     /**
-     * Can remove anything from a node. If it successfully gets through child_nodes, then it returns true
-     * Even if a node in child_nodes doesnt exist, its fine. It returns true.
-     * If child_nodes is empty, it returns false
+     * Removes the child nodes specified by child_nodes from the subject node. Returns
+     * true if the child nodes were successfully removed.
      */
     private removechildren = new Callable("removechildren", {
         signature: {
@@ -712,7 +711,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, child_nodes: BrsType) => {
-            if (child_nodes instanceof RoArray){
+            if (child_nodes instanceof RoArray) {
                 let childNodesElements = child_nodes.getElements();
                 if (childNodesElements.length != 0) {
                     childNodesElements.forEach(childNode => {
@@ -722,17 +721,18 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 }
             }
             return BrsBoolean.False;
-        }
+        },
     });
 
     /**
-     * If num_children is <= 0 it returns false
+     * Removes the number of child nodes specified by num_children from the subject node
+     * starting at the position specified by index.
      */
     private removechildrenindex = new Callable("removechildrenindex", {
         signature: {
             args: [
                 new StdlibArgument("num_children", ValueKind.Int32),
-                new StdlibArgument("index", ValueKind.Int32)
+                new StdlibArgument("index", ValueKind.Int32),
             ],
             returns: ValueKind.Boolean,
         },
@@ -740,12 +740,12 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             let numChildrenValue = num_children.getValue();
             let indexValue = index.getValue();
 
-            if(numChildrenValue > 0){
+            if (numChildrenValue > 0) {
                 this.children.splice(indexValue, numChildrenValue);
                 return BrsBoolean.True;
             }
             return BrsBoolean.False;
-        }
+        },
     });
     /* Returns true if the subject node has the remote control focus, and false otherwise */
     private hasfocus = new Callable("hasfocus", {
