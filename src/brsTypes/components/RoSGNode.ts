@@ -8,6 +8,7 @@ import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
 import { Float } from "../Float";
+import { ParseJson, Val } from "../../stdlib";
 
 class Field {
     private type: string;
@@ -100,6 +101,18 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.removechild,
             this.getparent,
             this.createchild,
+            this.replacechild,
+            this.removechildren,
+            // this.appendchildren,
+            // this.getchild,
+            // this.insertchild,
+            // this.removechildrenindex,
+            // this.removechildindex,
+            // this.update????
+            // this.reparent,
+            // this.createchildren,
+            // this.replacechildren,
+            // this.insertchildren,
             // ifSGNodeFocus methods
             this.hasfocus,
             this.setfocus,
@@ -263,6 +276,18 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
 
         // name was not found anywhere in tree
         return BrsInvalid.Instance;
+    }
+
+    private removeChildByReference(child: BrsType): Boolean {
+        if (child instanceof RoSGNode) {
+            let spliceIndex = this.children.indexOf(child);
+            if (spliceIndex >= 0) {
+                child.removeParent();
+                this.children.splice(spliceIndex, 1);
+            }
+            return true;
+        }
+        return false;
     }
 
     /** Removes all fields from the node */
@@ -617,15 +642,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, child: BrsType) => {
-            if (child instanceof RoSGNode) {
-                let spliceIndex = this.children.indexOf(child);
-                if (spliceIndex >= 0) {
-                    child.removeParent();
-                    this.children.splice(spliceIndex, 1);
-                }
-                return BrsBoolean.True;
-            }
-            return BrsBoolean.False;
+            return this.removeChildByReference(child) ? BrsBoolean.True : BrsBoolean.False;
         },
     });
     /* If the subject node has been added to a parent node list of children,
@@ -659,6 +676,77 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /**
+     * If the subject node has a child node in the index position, replace that child 
+     * node with the newChild node in the subject node list of children, otherwise do nothing.
+     */
+    private replacechild = new Callable("replacechild", {
+        signature: {
+            args: [
+                new StdlibArgument("newchild", ValueKind.Dynamic),
+                new StdlibArgument("index", ValueKind.Int32)
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, newchild: BrsType, index: Int32) => {
+            let childrenSize = this.children.length;
+            let indexValue = index.getValue();
+            if (newchild instanceof RoSGNode && indexValue < childrenSize) {
+                this.children[indexValue].removeParent();
+                newchild.setParent(this);
+                this.children.splice(indexValue, 1, newchild);
+                return BrsBoolean.True;
+            }
+            return BrsBoolean.False;
+        },
+    });
+
+    /**
+     * Can remove anything from a node. If it successfully gets through child_nodes, then it returns true
+     * Even if a node in child_nodes doesnt exist, its fine. It returns true.
+     * If child_nodes is empty, it returns false
+     */
+    private removechildren = new Callable("removechildren", {
+        signature: {
+            args: [new StdlibArgument("child_nodes", ValueKind.Dynamic)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, child_nodes: BrsType) => {
+            if (child_nodes instanceof RoArray){
+                let childNodesElements = child_nodes.getElements();
+                if (childNodesElements.length != 0) {
+                    childNodesElements.forEach(childNode => {
+                        this.removeChildByReference(childNode);
+                    });
+                    return BrsBoolean.True;
+                }
+            }
+            return BrsBoolean.False;
+        }
+    });
+
+    /**
+     * If num_children is <= 0 it returns false
+     */
+    private removechildrenindex = new Callable("removechildrenindex", {
+        signature: {
+            args: [
+                new StdlibArgument("num_children", ValueKind.Int32),
+                new StdlibArgument("index", ValueKind.Int32)
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, num_children: Int32, index: Int32) => {
+            let numChildrenValue = num_children.getValue();
+            let indexValue = index.getValue();
+
+            if(numChildrenValue > 0){
+                this.children.splice(indexValue, numChildrenValue);
+                return BrsBoolean.True;
+            }
+            return BrsBoolean.False;
+        }
+    });
     /* Returns true if the subject node has the remote control focus, and false otherwise */
     private hasfocus = new Callable("hasfocus", {
         signature: {
