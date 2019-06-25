@@ -9,7 +9,7 @@ export class MockNode extends RoSGNode {
         mockElements.forEach((value: BrsType, key: string) => {
             if (value instanceof Callable) {
                 // register callable method on mockNode
-                this.registerMethod(key, value);
+                this.appendMethod(key, value);
             } else {
                 // add field to mockNode
                 this.set(new BrsString(key), value);

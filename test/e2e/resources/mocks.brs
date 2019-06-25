@@ -42,6 +42,7 @@ sub Main()
         name: "name"
     })
     mockNode = createObject("roSGNode", "fakeType")
+    secondMockNode = createObject("roSGNode", "fakeType")
     mockNode.id = "node-id"
     mockNode.name = "node-name"
     mockChild = mockNode.getChild(333)
@@ -50,7 +51,6 @@ sub Main()
     print "mocked node name:" mockNode.name                 ' => node-name
     print "mocked node child index:" mockChild.index        ' => 333
 
-    secondMockNode = createObject("roSGNode", "fakeType")
     print "second mock node id is not mutated by first mock:" secondMockNode.id     ' => id
     print "second mock node name is not mutated by first mock:" secondMockNode.name ' => name
 end sub

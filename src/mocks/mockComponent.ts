@@ -6,17 +6,18 @@ import {
     StdlibArgument,
     BrsInvalid,
     RoAssociativeArray,
+    Uninitialized,
 } from "../brsTypes";
 import { MockNode } from "./MockNode";
 import { Interpreter } from "../interpreter";
 
-let mockComponent = new Callable("mockComponent", {
+const mockComponent = new Callable("mockComponent", {
     signature: {
         args: [
             new StdlibArgument("objToMock", ValueKind.String),
             new StdlibArgument("mock", ValueKind.Object),
         ],
-        returns: ValueKind.Dynamic,
+        returns: ValueKind.Void,
     },
     impl: (interpreter: Interpreter, objToMock: BrsType, mock: RoAssociativeArray) => {
         interpreter.environment.setMock(objToMock.toString(), mock);
