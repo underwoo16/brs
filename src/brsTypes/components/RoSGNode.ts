@@ -103,9 +103,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.createchild,
             this.replacechild,
             this.removechildren,
-            // this.appendchildren,
-            // this.getchild,
-            // this.insertchild,
+            this.appendchildren,
+            this.getchild,
+            this.insertchild,
             this.removechildrenindex,
             // this.removechildindex,
             // this.update????
@@ -285,6 +285,18 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 child.removeParent();
                 this.children.splice(spliceIndex, 1);
             }
+            return true;
+        }
+        return false;
+    }
+
+    private appendChildToParent(child: BrsType): Boolean {
+        if (child instanceof RoSGNode) {
+            if (this.children.includes(child)) {
+                return true;
+            }
+            this.children.push(child);
+            child.setParent(this);
             return true;
         }
         return false;
@@ -590,15 +602,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, child: BrsType) => {
-            if (child instanceof RoSGNode) {
-                if (this.children.includes(child)) {
-                    return BrsBoolean.True;
-                }
-                this.children.push(child);
-                child.setParent(this);
-                return BrsBoolean.True;
-            }
-            return BrsBoolean.False;
+            return this.appendChildToParent(child) ? BrsBoolean.True : BrsBoolean.False;
         },
     });
 
@@ -741,12 +745,90 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             let indexValue = index.getValue();
 
             if (numChildrenValue > 0) {
-                this.children.splice(indexValue, numChildrenValue);
+                let removedChildren = this.children.splice(indexValue, numChildrenValue);
+                removedChildren.forEach(node => {
+                    node.removeParent();
+                });
                 return BrsBoolean.True;
             }
             return BrsBoolean.False;
         },
     });
+
+    /**
+     * If the subject node has a child node at the index position, return it, otherwise
+     * return invalid.
+     */
+    private getchild = new Callable("getchild", {
+        signature: {
+            args: [new StdlibArgument("index", ValueKind.Int32)],
+            returns: ValueKind.Dynamic,
+        },
+        impl: (interpreter: Interpreter, index: Int32) => {
+            let indexValue = index.getValue();
+            let childrenSize = this.children.length;
+
+            if (indexValue >= 0 && indexValue < childrenSize) {
+                return this.children[indexValue];
+            }
+            return BrsInvalid.Instance;
+        },
+    });
+
+    /**
+     * If the subject node has a child node at the index position, return it, otherwise
+     * return invalid.
+     */
+    private appendchildren = new Callable("appendchildren", {
+        signature: {
+            args: [new StdlibArgument("child_nodes", ValueKind.Dynamic)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, child_nodes: BrsType) => {
+            if (child_nodes instanceof RoArray) {
+                let childNodesElements = child_nodes.getElements();
+                if (childNodesElements.length != 0) {
+                    childNodesElements.forEach(childNode => {
+                        if (childNode instanceof RoSGNode) {
+                            // Remove if it exists to reappend
+                            this.removeChildByReference(childNode);
+                            this.appendChildToParent(childNode);
+                        }
+                    });
+                    return BrsBoolean.True;
+                }
+            }
+            return BrsBoolean.False;
+        },
+    });
+
+    /**
+     * Inserts a previously-created child node at the position index in the subject
+     * node list of children, so that this is the position that the new child node
+     * is traversed during render.
+     */
+    private insertchild = new Callable("insertchild", {
+        signature: {
+            args: [
+                new StdlibArgument("child", ValueKind.Dynamic),
+                new StdlibArgument("index", ValueKind.Int32),
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, child: BrsType, index: Int32) => {
+            if (child instanceof RoSGNode) {
+                let childrenSize = this.children.length;
+                let indexValue = index.getValue() < 0 ? childrenSize : index.getValue();
+                // Remove node if it already exists
+                this.removeChildByReference(child);
+                child.setParent(this);
+                this.children.splice(indexValue, 0, child);
+                return BrsBoolean.True;
+            }
+            return BrsBoolean.False;
+        },
+    });
+
     /* Returns true if the subject node has the remote control focus, and false otherwise */
     private hasfocus = new Callable("hasfocus", {
         signature: {

@@ -58,7 +58,7 @@ sub main()
     childNode4 = createObject("roSGNode", "Node")
     childNode4.id = "new node"
     parentNode.replaceChild(childNode4, 0)
-    print "first child id after replacing: " parentNode.getChildren(1, 0)[0].id ' => new node
+    print "first child id after replacing: " parentNode.getChild(0).id ' => new node
     print "parent child count: " parentNode.getChildCount()     ' => 2
     parentNode.removeChildren([childNode, childNode2])
     print "parent child count: " parentNode.getChildCount()         ' => 2
@@ -69,8 +69,17 @@ sub main()
     parentNode.appendChild(childNode3)
     parentNode.removeChildrenIndex(2, 7)
     print "parent child count: " parentNode.getChildCount()         ' => 3
-    parentNode.removeChildrenIndex(2, 0)
-    print "parent child count: " parentNode.getChildCount()         ' => 1
+    parentNode.removeChildrenIndex(3, 0)
+    print "parent child count: " parentNode.getChildCount()         ' => 0
+    parentNode.appendChildren([childNode, childNode2])
+    print "parent child count: " parentNode.getChildCount()         ' => 2
+    parentNode.appendChildren([childNode, childNode3])
+    print "parent child count: " parentNode.getChildCount()         ' => 3
+    parentNode.insertChild(childNode4, 0)
+    print "parent child count: " parentNode.getChildCount()         ' => 4
+    parentNode.insertChild(childNode3, 0)
+    print "parent child count: " parentNode.getChildCount()         ' => 4
+
     ' ifSGNodeFocus tests
     ' assume parent node will be attached to the rootscene node tree, otherwise
     ' node focus is meaningless and won't work as expected.
