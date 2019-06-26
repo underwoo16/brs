@@ -1255,7 +1255,7 @@ describe("RoSGNode", () => {
                 expect(subtype).toBeTruthy();
 
                 let result = subtype.call(interpreter);
-                expect(result.value).toBe(new BrsString("Node").value);
+                expect(result.value).toBe("Node");
             });
 
             it("returns type for arbitrary roSGNode", () => {
@@ -1266,7 +1266,7 @@ describe("RoSGNode", () => {
                 let subtype = someNode.getMethod("subtype");
 
                 let result = subtype.call(interpreter);
-                expect(result.value).toBe(new BrsString("randomType").value);
+                expect(result.value).toBe("randomType");
             });
         });
     });

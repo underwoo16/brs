@@ -728,7 +728,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     /* Returns a Boolean value indicating whether the roSGNode parameter
-            refers to the same node object as the subject node */
+            refers to the same node object as this node */
     private issamenode = new Callable("issamenode", {
         signature: {
             args: [new StdlibArgument("roSGNode", ValueKind.Dynamic)],
@@ -740,7 +740,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
-    /* TODO */
+    /* Returns the subtype of this node as specified when it was created */
     private subtype = new Callable("subtype", {
         signature: {
             args: [],
