@@ -735,8 +735,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, roSGNode: RoSGNode) => {
-            let sameNode = this === roSGNode;
-            return sameNode ? BrsBoolean.True : BrsBoolean.False;
+            return BrsBoolean.from(this === roSGNode);
         },
     });
 
