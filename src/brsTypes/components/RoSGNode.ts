@@ -107,9 +107,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             this.getchild,
             this.insertchild,
             this.removechildrenindex,
-            // this.removechildindex,
-            // this.update????
-            // this.reparent,
+            this.removechildindex,
+            this.reparent,
             this.createchildren,
             this.replacechildren,
             this.insertchildren,
@@ -708,12 +707,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             }
             return child;
         },
-    }); //PROBABLY DOESNT WORK!!!!
+    });
 
     /**
      * If the subject node has a child node in the index position, replace that child
      * node with the newChild node in the subject node list of children, otherwise do nothing.
-     */ private replacechild = new Callable("replacechild", {
+     */
+
+    private replacechild = new Callable("replacechild", {
         signature: {
             args: [
                 new StdlibArgument("newchild", ValueKind.Dynamic),
@@ -878,6 +879,10 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /**
+     * Inserts the child nodes specified by child_nodes to the subject node starting
+     * at the position specified by index.
+     */
     private insertchildren = new Callable("insertchildren", {
         signature: {
             args: [
@@ -917,6 +922,61 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
         impl: (interpreter: Interpreter, child: BrsType, index: Int32) => {
             return BrsBoolean.from(this.insertChildAtIndex(child, index));
+        },
+    });
+
+    /**
+     * If the subject node has a child node in the index position, remove that child
+     * node from the subject node list of children.
+     */
+    private removechildindex = new Callable("removechildindex", {
+        signature: {
+            args: [new StdlibArgument("index", ValueKind.Int32)],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, index: Int32) => {
+            let indexValue = index.getValue();
+            let childrenSize = this.children.length;
+
+            if (indexValue < childrenSize) {
+                if (indexValue >= 0) {
+                    this.removeChildByReference(this.children[indexValue]);
+                }
+                return BrsBoolean.True;
+            }
+            return BrsBoolean.False;
+        },
+    });
+
+    /**
+     * Moves the subject node to another node.
+     * If adjustTransform is true, the subject node transformation factor fields (translation/rotation/scale)
+     * are adjusted so that the node has the same transformation factors relative to the screen as it previously did.
+     * If adjustTransform is false, the subject node is simply parented to the new node without adjusting its
+     * transformation factor fields, in which case, the reparenting operation could cause the node to jump to a
+     * new position on the screen.
+     */
+    private reparent = new Callable("reparent", {
+        signature: {
+            args: [
+                new StdlibArgument("newParent", ValueKind.Dynamic),
+                new StdlibArgument("adjustTransform", ValueKind.Boolean),
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, newParent: BrsType, adjustTransform: BrsBoolean) => {
+            if (newParent instanceof RoSGNode && newParent !== this) {
+                // TODO: adjustTransform has to be implemented probably by traversing the
+                // entire parent tree to get to the top, calculate the absolute transform
+                // parameters and then use that to adjust the new transform properties.
+                // Until that is implemented, the parameter does nothing.
+                if (this.parent instanceof RoSGNode) {
+                    this.parent.removeChildByReference(this);
+                }
+                this.setParent(newParent);
+                return BrsBoolean.True;
+            }
+            return BrsBoolean.False;
         },
     });
 

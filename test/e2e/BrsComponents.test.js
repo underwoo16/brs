@@ -145,7 +145,10 @@ describe("end to end brightscript functions", () => {
             "4",
             "inserted child id: ",
             "new node",
-
+            "parent child count: ",
+            "4",
+            "new parent id: ",
+            "new node",
             //ifSGNodeFocus tests
             "is parent in focus chain: ",
             "false",

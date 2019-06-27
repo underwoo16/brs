@@ -1607,6 +1607,120 @@ describe("RoSGNode", () => {
                 expect(result).toEqual(new Int32(1));
             });
         });
+        describe("removechildindex", () => {
+            it("removes a child with correct index", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+                let removeChildIndex = parent.getMethod("removechildindex");
+
+                appendChild.call(interpreter, child1);
+
+                let childRemoved = removeChildIndex.call(interpreter, new Int32(0));
+                let result = getChildCount.call(interpreter);
+                expect(childRemoved.value).toEqual(true);
+                expect(result).toEqual(new Int32(0));
+            });
+            it("returns true for negative index", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+                let removeChildIndex = parent.getMethod("removechildindex");
+
+                appendChild.call(interpreter, child1);
+
+                let childRemoved = removeChildIndex.call(interpreter, new Int32(-1));
+                let result = getChildCount.call(interpreter);
+                expect(childRemoved.value).toEqual(true);
+                expect(result).toEqual(new Int32(1));
+            });
+            it("returns false for index greater than number of children", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+                let removeChildIndex = parent.getMethod("removechildindex");
+
+                appendChild.call(interpreter, child1);
+
+                let childRemoved = removeChildIndex.call(interpreter, new Int32(1));
+                let result = getChildCount.call(interpreter);
+                expect(childRemoved.value).toEqual(false);
+                expect(result).toEqual(new Int32(1));
+            });
+        });
+        describe("removechildindex", () => {
+            it("removes a child with correct index", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+                let removeChildIndex = parent.getMethod("removechildindex");
+
+                appendChild.call(interpreter, child1);
+
+                let childRemoved = removeChildIndex.call(interpreter, new Int32(0));
+                let result = getChildCount.call(interpreter);
+                expect(childRemoved.value).toEqual(true);
+                expect(result).toEqual(new Int32(0));
+            });
+            it("returns true for negative index", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+                let removeChildIndex = parent.getMethod("removechildindex");
+
+                appendChild.call(interpreter, child1);
+
+                let childRemoved = removeChildIndex.call(interpreter, new Int32(-1));
+                let result = getChildCount.call(interpreter);
+                expect(childRemoved.value).toEqual(true);
+                expect(result).toEqual(new Int32(1));
+            });
+            it("returns false for index greater than number of children", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+                let removeChildIndex = parent.getMethod("removechildindex");
+
+                appendChild.call(interpreter, child1);
+
+                let childRemoved = removeChildIndex.call(interpreter, new Int32(1));
+                let result = getChildCount.call(interpreter);
+                expect(childRemoved.value).toEqual(false);
+                expect(result).toEqual(new Int32(1));
+            });
+        });
+        describe("reparent", () => {
+            it("reparents to another node", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let getParent = child1.getMethod("getparent");
+                let reparent = child1.getMethod("reparent");
+
+                appendChild.call(interpreter, child1);
+
+                let childReparented = reparent.call(interpreter, child2, BrsBoolean.False);
+                let result = getParent.call(interpreter);
+                expect(childReparented.value).toEqual(true);
+                expect(result).toEqual(child2);
+            });
+            it("doesn't reparent to itself", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let getParent = child1.getMethod("getparent");
+                let reparent = child1.getMethod("reparent");
+
+                appendChild.call(interpreter, child1);
+
+                let childReparented = reparent.call(interpreter, child1, BrsBoolean.False);
+                let result = getParent.call(interpreter);
+                expect(childReparented.value).toEqual(false);
+                expect(result).toEqual(parent);
+            });
+            it("child relation is removed from previous parent", () => {
+                let appendChild = parent.getMethod("appendchild");
+                let getChildCount = parent.getMethod("getchildcount");
+                let reparent = child1.getMethod("reparent");
+
+                appendChild.call(interpreter, child1);
+
+                let childReparented = reparent.call(interpreter, child2, BrsBoolean.False);
+                let result = getChildCount.call(interpreter);
+                expect(childReparented.value).toEqual(true);
+                expect(result.value).toEqual(0);
+            });
+        });
     });
 
     describe("ifSGNodeFocus", () => {
