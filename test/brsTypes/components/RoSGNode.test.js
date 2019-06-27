@@ -998,7 +998,7 @@ describe("RoSGNode", () => {
 
                 let childReplaced = replaceChild.call(interpreter, child3, new Int32(0));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child3);
             });
             it("returns false if index is greater than length of array", () => {
@@ -1011,7 +1011,7 @@ describe("RoSGNode", () => {
 
                 let childReplaced = replaceChild.call(interpreter, child3, new Int32(2));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeFalsy();
+                expect(childReplaced.value).toEqual(false);
                 expect(result.elements[0]).toEqual(child1);
                 expect(result.elements[1]).toEqual(child2);
             });
@@ -1025,7 +1025,7 @@ describe("RoSGNode", () => {
 
                 let childReplaced = replaceChild.call(interpreter, child3, new Int32(-2));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child1);
                 expect(result.elements[1]).toEqual(child2);
             });
@@ -1039,7 +1039,7 @@ describe("RoSGNode", () => {
 
                 let childReplaced = replaceChild.call(interpreter, child2, new Int32(0));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child2);
             });
@@ -1053,7 +1053,7 @@ describe("RoSGNode", () => {
 
                 let childReplaced = replaceChild.call(interpreter, child1, new Int32(0));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child1);
             });
@@ -1067,7 +1067,7 @@ describe("RoSGNode", () => {
 
                 let childReplaced = replaceChild.call(interpreter, child2, new Int32(-1));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child1);
             });
@@ -1084,7 +1084,7 @@ describe("RoSGNode", () => {
                 let childReplaced = replaceChild.call(interpreter, child2, new Int32(2));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
 
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(3);
                 expect(result.elements[0]).toEqual(child1);
                 expect(result.elements[2]).toEqual(child2);
@@ -1102,7 +1102,7 @@ describe("RoSGNode", () => {
                 let childReplaced = replaceChild.call(interpreter, child2, new Int32(3));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
 
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(4);
                 expect(result.elements[0]).toEqual(child1);
                 expect(result.elements[1]).toEqual(child3);
@@ -1124,7 +1124,7 @@ describe("RoSGNode", () => {
                     new Int32(0)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(2);
                 expect(result.elements[0]).toEqual(child3);
             });
@@ -1141,7 +1141,7 @@ describe("RoSGNode", () => {
                     new Int32(0)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child2);
             });
@@ -1158,7 +1158,7 @@ describe("RoSGNode", () => {
                     new Int32(0)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeFalsy();
+                expect(childReplaced.value).toEqual(false);
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child1);
             });
@@ -1176,7 +1176,7 @@ describe("RoSGNode", () => {
                     new Int32(2)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(2);
                 expect(result.elements[0]).toEqual(child1);
             });
@@ -1194,7 +1194,7 @@ describe("RoSGNode", () => {
                     new Int32(-1)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(2);
                 expect(result.elements[0]).toEqual(child4);
             });
@@ -1214,7 +1214,7 @@ describe("RoSGNode", () => {
                     new Int32(-1)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(2);
                 expect(result.elements[0]).toEqual(child2);
                 expect(result.elements[1]).toEqual(child4);
@@ -1235,7 +1235,7 @@ describe("RoSGNode", () => {
                     new Int32(11)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childReplaced.value).toBeTruthy();
+                expect(childReplaced.value).toEqual(true);
                 expect(result.elements.length).toEqual(2);
                 expect(result.elements[0]).toEqual(child3);
                 expect(result.elements[1]).toEqual(child4);
@@ -1253,7 +1253,7 @@ describe("RoSGNode", () => {
 
                 let childInserted = insertChild.call(interpreter, child4, new Int32(1));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childInserted.value).toBeTruthy();
+                expect(childInserted.value).toEqual(true);
                 expect(result.elements[1]).toEqual(child4);
             });
             it("inserts a new node at index more than number of children", () => {
@@ -1266,7 +1266,7 @@ describe("RoSGNode", () => {
 
                 let childInserted = insertChild.call(interpreter, child3, new Int32(11));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childInserted.value).toBeTruthy();
+                expect(childInserted.value).toEqual(true);
                 expect(result.elements[2]).toEqual(child3);
             });
             it("inserts a new node with negative index", () => {
@@ -1279,7 +1279,7 @@ describe("RoSGNode", () => {
 
                 let childInserted = insertChild.call(interpreter, child3, new Int32(-1));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childInserted.value).toBeTruthy();
+                expect(childInserted.value).toEqual(true);
                 expect(result.elements[2]).toEqual(child3);
             });
             it("inserts an existing node", () => {
@@ -1293,7 +1293,7 @@ describe("RoSGNode", () => {
 
                 let childInserted = insertChild.call(interpreter, child2, new Int32(0));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childInserted.value).toBeTruthy();
+                expect(childInserted.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child2);
             });
         });
@@ -1312,7 +1312,7 @@ describe("RoSGNode", () => {
                     new Int32(1)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenInserted.value).toBeTruthy();
+                expect(childrenInserted.value).toEqual(true);
                 expect(result.elements.length).toEqual(4);
                 expect(result.elements[1]).toEqual(child3);
             });
@@ -1330,7 +1330,7 @@ describe("RoSGNode", () => {
                     new Int32(11)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenInserted.value).toBeTruthy();
+                expect(childrenInserted.value).toEqual(true);
                 expect(result.elements.length).toEqual(4);
                 expect(result.elements[2]).toEqual(child3);
             });
@@ -1348,7 +1348,7 @@ describe("RoSGNode", () => {
                     new Int32(0)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenInserted.value).toBeTruthy();
+                expect(childrenInserted.value).toEqual(true);
                 expect(result.elements.length).toEqual(3);
                 expect(result.elements[0]).toEqual(child2);
             });
@@ -1366,7 +1366,7 @@ describe("RoSGNode", () => {
                     new Int32(-11)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenInserted.value).toBeTruthy();
+                expect(childrenInserted.value).toEqual(true);
                 expect(result.elements.length).toEqual(3);
                 expect(result.elements[0]).toEqual(child2);
             });
@@ -1385,7 +1385,7 @@ describe("RoSGNode", () => {
                     new Int32(-1)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenInserted.value).toBeTruthy();
+                expect(childrenInserted.value).toEqual(true);
                 expect(result.elements.length).toEqual(4);
                 expect(result.elements[0]).toEqual(child4);
                 expect(result.elements[3]).toEqual(child2);
@@ -1404,7 +1404,7 @@ describe("RoSGNode", () => {
                     new Int32(-1)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenInserted.value).toBeFalsy();
+                expect(childrenInserted.value).toEqual(false);
                 expect(result.elements.length).toEqual(2);
             });
         });
@@ -1455,7 +1455,7 @@ describe("RoSGNode", () => {
                     new RoArray([child1, child3, child4])
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenRemoved.value).toBeTruthy();
+                expect(childrenRemoved.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child2);
             });
             it("returns false for empty array", () => {
@@ -1468,7 +1468,7 @@ describe("RoSGNode", () => {
 
                 let childrenRemoved = removeChildren.call(interpreter, new RoArray([]));
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenRemoved.value).toBeFalsy();
+                expect(childrenRemoved.value).toEqual(false);
                 expect(result.elements.length).toEqual(2);
             });
         });
@@ -1488,7 +1488,7 @@ describe("RoSGNode", () => {
                     new Int32(0)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenRemoved.value).toBeTruthy();
+                expect(childrenRemoved.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child3);
             });
             it("returns true and does nothing for index greater than number of children", () => {
@@ -1505,7 +1505,7 @@ describe("RoSGNode", () => {
                     new Int32(5)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenRemoved.value).toBeTruthy();
+                expect(childrenRemoved.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child1);
             });
             it("returns false num_children less than or equal to 0", () => {
@@ -1522,7 +1522,7 @@ describe("RoSGNode", () => {
                     new Int32(0)
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenRemoved.value).toBeFalsy();
+                expect(childrenRemoved.value).toEqual(false);
                 expect(result.elements.length).toEqual(2);
             });
         });
@@ -1539,7 +1539,7 @@ describe("RoSGNode", () => {
                     new RoArray([child2, child3])
                 );
                 let result = getChildCount.call(interpreter);
-                expect(childrenAppended.value).toBeTruthy();
+                expect(childrenAppended.value).toEqual(true);
                 expect(result).toEqual(new Int32(3));
             });
             it("doesn't duplicate existing children", () => {
@@ -1555,7 +1555,7 @@ describe("RoSGNode", () => {
                     new RoArray([child3, child1])
                 );
                 let result = getChildren.call(interpreter, new Int32(-1), new Int32(0));
-                expect(childrenAppended.value).toBeTruthy();
+                expect(childrenAppended.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child2);
             });
             it("returns false for empty array", () => {
@@ -1567,7 +1567,7 @@ describe("RoSGNode", () => {
 
                 let childrenAppended = appendChildren.call(interpreter, new RoArray([]));
                 let result = getChildCount.call(interpreter);
-                expect(childrenAppended.value).toBeFalsy();
+                expect(childrenAppended.value).toEqual(false);
                 expect(result).toEqual(new Int32(1));
             });
         });

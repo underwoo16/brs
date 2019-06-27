@@ -723,7 +723,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, newchild: BrsType, index: Int32) => {
-            return this.replaceChildAtIndex(newchild, index) ? BrsBoolean.True : BrsBoolean.False;
+            return BrsBoolean.from(this.replaceChildAtIndex(newchild, index));
         },
     });
 
@@ -970,6 +970,8 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
                 // entire parent tree to get to the top, calculate the absolute transform
                 // parameters and then use that to adjust the new transform properties.
                 // Until that is implemented, the parameter does nothing.
+
+                // Remove parents child reference
                 if (this.parent instanceof RoSGNode) {
                     this.parent.removeChildByReference(this);
                 }
