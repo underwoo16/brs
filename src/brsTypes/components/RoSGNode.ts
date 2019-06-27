@@ -16,6 +16,7 @@ import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
 import { Float } from "../Float";
+import { ComponentDefinition } from "../../componentprocessor";
 
 class Field {
     private type: string;
@@ -706,35 +707,38 @@ export function createNodeByType(interpreter: Interpreter, type: BrsString) {
         return new RoSGNode([]);
     } else if (typeDef) {
         //use typeDef object to tack on all the bells & whistles of a custom node
-        let newNode = new RoSGNode([]);
-        //convert object into object fields
-        let fields = typeDef.fields;
-        for (let [key, value] of Object.entries(fields)) {
-            if (value instanceof Object) {
-                let addField = newNode.getMethod("addField");
-                let setField = newNode.getMethod("setFIeld");
-                const fieldName = new BrsString(key);
-                if (addField) {
-                    addField.call(
-                        interpreter,
-                        fieldName,
-                        new BrsString(value.type),
-                        BrsBoolean.from(value.alwaysNotify === "true")
-                    );
-                }
-                // set default value if it was specified in xml
-                if (setField && value.value) {
-                    let result = setField.call(
-                        interpreter,
-                        fieldName,
-                        getBrsTypeFromString(value.type, value.value)
-                    );
-                }
-            }
-        }
+        let node = new RoSGNode([], type.value);
+        addFields(interpreter, node, typeDef);
 
-        return newNode;
+        return node;
     } else {
         return BrsInvalid.Instance;
+    }
+}
+
+function addFields(interpreter: Interpreter, node: RoSGNode, typeDef: ComponentDefinition) {
+    let fields = typeDef.fields;
+    for (let [key, value] of Object.entries(fields)) {
+        if (value instanceof Object) {
+            let addField = node.getMethod("addField");
+            let setField = node.getMethod("setFIeld");
+            const fieldName = new BrsString(key);
+            if (addField) {
+                addField.call(
+                    interpreter,
+                    fieldName,
+                    new BrsString(value.type),
+                    BrsBoolean.from(value.alwaysNotify === "true")
+                );
+            }
+            // set default value if it was specified in xml
+            if (setField && value.value) {
+                let result = setField.call(
+                    interpreter,
+                    fieldName,
+                    getBrsTypeFromString(value.type, value.value)
+                );
+            }
+        }
     }
 }

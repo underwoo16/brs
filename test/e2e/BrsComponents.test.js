@@ -202,12 +202,16 @@ describe("end to end brightscript functions", () => {
         await execute([resourceFile("components", "customComponent.brs")], outputStreams);
 
         expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
-            "view.panelShown: ",
+            "node.baseBoolField: ",
+            "false",
+            "node.baseIntField: ",
+            "0",
+            "node.normalBoolField: ",
             "true",
-            "view.moveDirection: ",
-            "up",
-            "view.rowFocused: ",
-            "500",
+            "node.advancedStringField: ",
+            "advancedField!",
+            "node.advancedIntField: ",
+            "12345",
         ]);
     });
 });

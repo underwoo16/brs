@@ -23,7 +23,7 @@ export class ComponentDefinition {
     public contents?: string;
     public xmlNode?: XmlDocument;
     public name?: string;
-    // indicates whether this component heirarchy has been processed before
+    // indicates whether this component hierarchy has been processed before
     // which means the fields, children, and inherited functions are correctly set
     public processed: boolean = false;
     public fields: ComponentField = {};
@@ -68,9 +68,9 @@ async function processXmlTree(
     let nodeDefMap = new Map<string, ComponentDefinition>();
 
     // create map of just ComponentDefinition objects
-    nodeDefs.map(node => {
-        if (node.isFulfilled && !node.isRejected) {
-            nodeDefMap.set(node.value!.name!, node.value!);
+    nodeDefs.map(item => {
+        if (item.isFulfilled && !item.isRejected) {
+            nodeDefMap.set(item.value!.name!, item.value!);
         }
     });
 
@@ -78,16 +78,16 @@ async function processXmlTree(
     // the component backwards from most extended component first
     let inheritanceStack: ComponentDefinition[] = [];
 
-    nodeDefMap.forEach((node, nodeName) => {
-        if (node && node.processed === false) {
-            let xmlNode = node.xmlNode;
-            inheritanceStack.push(node);
+    nodeDefMap.forEach((nodeDef, nodeName) => {
+        if (nodeDef && nodeDef.processed === false) {
+            let xmlNode = nodeDef.xmlNode;
+            inheritanceStack.push(nodeDef);
             //builds inheritance stack
             while (xmlNode && xmlNode.attr.extends) {
-                let superNode = nodeDefMap.get(xmlNode.attr.extends);
-                if (superNode) {
-                    inheritanceStack.push(superNode);
-                    xmlNode = superNode.xmlNode;
+                let superNodeDef = nodeDefMap.get(xmlNode.attr.extends);
+                if (superNodeDef) {
+                    inheritanceStack.push(superNodeDef);
+                    xmlNode = superNodeDef.xmlNode;
                 } else {
                     xmlNode = undefined;
                 }
@@ -97,18 +97,19 @@ async function processXmlTree(
             // pop the stack & build our component
             // we can safely assume nodes are valid ComponentDefinition objects
             while (inheritanceStack.length > 0) {
-                let newNode = inheritanceStack.pop();
-                if (newNode) {
-                    if (newNode.processed) {
-                        inheritedFields = newNode.fields;
+                let newNodeDef = inheritanceStack.pop();
+                if (newNodeDef) {
+                    if (newNodeDef.processed) {
+                        inheritedFields = newNodeDef.fields;
                     } else {
-                        let nodeFields = getFields(newNode.xmlNode!);
+                        let nodeFields = getFields(newNodeDef.xmlNode!);
                         // we will get run-time error if any fields are duplicated
                         // between inherited components, but here we will retain
                         // the original value without throwing an error for simplicity
+                        // TODO: throw exception when fields are duplicated.
                         inheritedFields = { ...nodeFields, ...inheritedFields };
-                        newNode.fields = inheritedFields;
-                        newNode.processed = true;
+                        newNodeDef.fields = inheritedFields;
+                        newNodeDef.processed = true;
                     }
                 }
             }
