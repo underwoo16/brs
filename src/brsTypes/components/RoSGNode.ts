@@ -110,9 +110,9 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             // this.removechildindex,
             // this.update????
             // this.reparent,
-            // this.createchildren,
-            // this.replacechildren,
-            // this.insertchildren,
+            this.createchildren,
+            this.replacechildren,
+            this.insertchildren,
             // ifSGNodeFocus methods
             this.hasfocus,
             this.setfocus,
@@ -278,7 +278,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         return BrsInvalid.Instance;
     }
 
-    private removeChildByReference(child: BrsType): Boolean {
+    private removeChildByReference(child: BrsType): boolean {
         if (child instanceof RoSGNode) {
             let spliceIndex = this.children.indexOf(child);
             if (spliceIndex >= 0) {
@@ -290,13 +290,43 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         return false;
     }
 
-    private appendChildToParent(child: BrsType): Boolean {
+    private appendChildToParent(child: BrsType): boolean {
         if (child instanceof RoSGNode) {
             if (this.children.includes(child)) {
                 return true;
             }
             this.children.push(child);
             child.setParent(this);
+            return true;
+        }
+        return false;
+    }
+
+    private replaceChildAtIndex(newchild: BrsType, index: Int32): boolean {
+        let childrenSize = this.children.length;
+        let indexValue = index.getValue();
+        if (newchild instanceof RoSGNode && indexValue < childrenSize) {
+            this.removeChildByReference(newchild);
+            if (indexValue >= 0) {
+                if (indexValue < this.children.length) {
+                    this.children[indexValue].removeParent();
+                }
+                newchild.setParent(this);
+                this.children.splice(indexValue, 1, newchild);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private insertChildAtIndex(child: BrsType, index: Int32): boolean {
+        if (child instanceof RoSGNode) {
+            let childrenSize = this.children.length;
+            let indexValue = index.getValue() < 0 ? childrenSize : index.getValue();
+            // Remove node if it already exists
+            this.removeChildByReference(child);
+            child.setParent(this);
+            this.children.splice(indexValue, 0, child);
             return true;
         }
         return false;
@@ -678,13 +708,12 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             }
             return child;
         },
-    });
+    }); //PROBABLY DOESNT WORK!!!!
 
     /**
      * If the subject node has a child node in the index position, replace that child
      * node with the newChild node in the subject node list of children, otherwise do nothing.
-     */
-    private replacechild = new Callable("replacechild", {
+     */ private replacechild = new Callable("replacechild", {
         signature: {
             args: [
                 new StdlibArgument("newchild", ValueKind.Dynamic),
@@ -693,15 +722,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, newchild: BrsType, index: Int32) => {
-            let childrenSize = this.children.length;
-            let indexValue = index.getValue();
-            if (newchild instanceof RoSGNode && indexValue < childrenSize) {
-                this.children[indexValue].removeParent();
-                newchild.setParent(this);
-                this.children.splice(indexValue, 1, newchild);
-                return BrsBoolean.True;
-            }
-            return BrsBoolean.False;
+            return this.replaceChildAtIndex(newchild, index) ? BrsBoolean.True : BrsBoolean.False;
         },
     });
 
@@ -802,6 +823,85 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         },
     });
 
+    /** Creates the number of children specified by num_children for the subject node,
+     *  of the type or extended type specified by subtype.
+     */
+    private createchildren = new Callable("createchildren", {
+        signature: {
+            args: [
+                new StdlibArgument("num_children", ValueKind.Int32),
+                new StdlibArgument("subtype", ValueKind.String),
+            ],
+            returns: ValueKind.Dynamic,
+        },
+        impl: (interpreter: Interpreter, num_children: Int32, subtype: BrsString) => {
+            let numChildrenValue = num_children.getValue();
+            let addedChildren: RoSGNode[] = [];
+            for (let i = 0; i < numChildrenValue; i++) {
+                let child = createNodeByType(subtype);
+                if (child instanceof RoSGNode) {
+                    this.children.push(child);
+                    addedChildren.push(child);
+                    child.setParent(this);
+                }
+            }
+            return new RoArray(addedChildren);
+        },
+    });
+
+    /** Replaces the child nodes in the subject node, starting at the position specified
+     *  by index, with new child nodes specified by child_nodes.
+     */
+    private replacechildren = new Callable("replacechildren", {
+        signature: {
+            args: [
+                new StdlibArgument("child_nodes", ValueKind.Dynamic),
+                new StdlibArgument("index", ValueKind.Int32),
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, child_nodes: BrsType, index: Int32) => {
+            if (child_nodes instanceof RoArray) {
+                let indexValue = index.getValue();
+                let childNodesElements = child_nodes.getElements();
+                if (childNodesElements.length != 0) {
+                    childNodesElements.forEach(childNode => {
+                        if (!this.replaceChildAtIndex(childNode, new Int32(indexValue))) {
+                            this.removeChildByReference(childNode);
+                        }
+                        indexValue += 1;
+                    });
+                    return BrsBoolean.True;
+                }
+            }
+            return BrsBoolean.False;
+        },
+    });
+
+    private insertchildren = new Callable("insertchildren", {
+        signature: {
+            args: [
+                new StdlibArgument("child_nodes", ValueKind.Dynamic),
+                new StdlibArgument("index", ValueKind.Int32),
+            ],
+            returns: ValueKind.Boolean,
+        },
+        impl: (interpreter: Interpreter, child_nodes: BrsType, index: Int32) => {
+            if (child_nodes instanceof RoArray) {
+                let indexValue = index.getValue();
+                let childNodesElements = child_nodes.getElements();
+                if (childNodesElements.length != 0) {
+                    childNodesElements.forEach(childNode => {
+                        this.insertChildAtIndex(childNode, new Int32(indexValue));
+                        indexValue += 1;
+                    });
+                    return BrsBoolean.True;
+                }
+            }
+            return BrsBoolean.False;
+        },
+    });
+
     /**
      * Inserts a previously-created child node at the position index in the subject
      * node list of children, so that this is the position that the new child node
@@ -816,16 +916,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, child: BrsType, index: Int32) => {
-            if (child instanceof RoSGNode) {
-                let childrenSize = this.children.length;
-                let indexValue = index.getValue() < 0 ? childrenSize : index.getValue();
-                // Remove node if it already exists
-                this.removeChildByReference(child);
-                child.setParent(this);
-                this.children.splice(indexValue, 0, child);
-                return BrsBoolean.True;
-            }
-            return BrsBoolean.False;
+            return BrsBoolean.from(this.insertChildAtIndex(child, index));
         },
     });
 

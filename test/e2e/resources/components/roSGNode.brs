@@ -79,6 +79,14 @@ sub main()
     print "parent child count: " parentNode.getChildCount()         ' => 4
     parentNode.insertChild(childNode3, 0)
     print "parent child count: " parentNode.getChildCount()         ' => 4
+    parentNode.createChildren(2, "Node")
+    print "parent child count: " parentNode.getChildCount()         ' => 6
+    parentNode.removeChildren([childNode, childNode2])
+    parentNode.replaceChildren([childNode, childNode2], 1)
+    print "parent child count: " parentNode.getChildCount()         ' => 4
+    parentNode.removeChildren([childNode3, childNode4])
+    parentNode.insertChildren([childNode3, childNode4], 0)
+    print "inserted child id: " parentNode.getChild(1).id         ' => new node
 
     ' ifSGNodeFocus tests
     ' assume parent node will be attached to the rootscene node tree, otherwise
