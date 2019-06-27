@@ -97,7 +97,7 @@ export namespace ValueKind {
  *  @param {string} type data type of field
  *  @param {string} value optional value specified as string
  *  @returns {BrsType} BrsType value representation of the type
- *  */
+ */
 export function getBrsTypeFromString(type: string, value?: string): BrsType {
     let returnValue: BrsType;
 
