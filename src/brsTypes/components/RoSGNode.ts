@@ -304,9 +304,14 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
         let childrenSize = this.children.length;
         let indexValue = index.getValue();
         if (newchild instanceof RoSGNode && indexValue < childrenSize) {
+            // If newchild is already a child, remove it first.
             this.removeChildByReference(newchild);
             if (indexValue >= 0) {
+                // The check is done to see if indexValue is inside the
+                // new length of this.children (in case newchild was
+                // removed above)
                 if (indexValue < this.children.length) {
+                    // Remove the parent of the child at indexValue
                     this.children[indexValue].removeParent();
                 }
                 newchild.setParent(this);
