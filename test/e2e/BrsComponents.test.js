@@ -196,4 +196,18 @@ describe("end to end brightscript functions", () => {
             "🐶", // uri-encoded dog emoji, decoded
         ]);
     });
+
+    test("components/customComponent.brs", async () => {
+        outputStreams.root = __dirname + "/resources";
+        await execute([resourceFile("components", "customComponent.brs")], outputStreams);
+
+        expect(allArgs(outputStreams.stdout.write).filter(arg => arg !== "\n")).toEqual([
+            "view.panelShown: ",
+            "true",
+            "view.moveDirection: ",
+            "up",
+            "view.rowFocused: ",
+            "500",
+        ]);
+    });
 });

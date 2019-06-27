@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="BaseGuideView" extends="BaseWidget">
+    <interface>
+        <!-- input-->
+        <field id="content" type="node" onChange="onContentChange" />
+        <field id="panelShown" type="boolean" value="true" />
+        <field id="entity" type="assocarray" onChange="onEntityChanged" /> <!-- currently playing entity -->
+        <field id="isLastUsed" type="boolean" /> <!-- last used means we'll need to jump focus to playing channel/program -->
+
+        <!-- output -->
+        <field id="focusedTileContent" type="assocarray" />    <!-- metadata of currently focused tile (could be a program or network -->
+        <field id="isTileSelected" type="boolean" alwaysNotify="true" />    <!-- triggers callback that a guide item just got selected -->
+        <field id="idleTimeout" type="boolean" alwaysNotify="true" />
+        <field id="rowFocused" type="integer" value="500" />
+        <field id="columnFocused" type="integer" value="300" />  <!-- default 0 since we always start guide at 0th timeblock from origin -->
+
+        <!-- functions -->
+        <function name="setActiveView" />
+        <function name="startIdleTimer" />
+        <function name="stopIdleTimer" />
+        <function name="resetView" />   <!-- called when switching between views -->
+    </interface>
+    <script type="text/brightscript" uri="pkg:/components/player/liveGuide/scripts/BaseGuideView.brs" />
+    <script type="text/brightscript" uri="pkg:/components/player/liveGuide/scripts/LiveGuideSettings.brs" />
+    <children>
+    </children>
+</component>

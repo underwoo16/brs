@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="LiveGuideGrid" extends="BaseGuideView">
+    <interface>
+        <!-- output -->
+        <field id="moveDirection" type="string" value="up" alwaysNotify="true" />
+        <field id="snapGridTimeBlock" type="assocarray" />
+
+        <!-- functions -->
+        <function name="snapBackToGuideOrigin" />
+        <function name="updateGridMetadata" />
+        <function name="showGrid" />
+    </interface>
+    <script type="text/brightscript" uri="pkg:/components/player/liveGuide/scripts/LiveGuideGrid.brs" />
+    <script type="text/brightscript" uri="pkg:/source/utilities/Log.brs" />
+    <children>
+        <Group
+            id="networkTileGroup" />
+        <Group
+            id="programsRowGroupWrapper"
+            translation="[182,0]">  <!-- This is used to clip program dimension -->
+            <Group
+                id="programsRowGroup" />
+        </Group>
+        <ParallelAnimation
+            id="parallelAnimation" >
+            <Animation id="networkTileTranslationAnimation"
+                duration="0.2"
+                repeat="false"
+                easefunction="linear"
+                optional="true">
+                <Vector2DFieldInterpolator
+                    id="networkTileTranslationInterpolator"
+                    key="[0.0,1.0]"
+                    fieldToInterp="networkTileGroup.translation" />
+            </Animation>
+            <Animation id="programsRowTranslationAnimation"
+                duration="0.2"
+                repeat="false"
+                easefunction="linear"
+                optional="true">
+                <Vector2DFieldInterpolator
+                    id="programsRowTranslationInterpolator"
+                    key="[0.0,1.0]"
+                    fieldToInterp="programsRowGroup.translation" />
+            </Animation>
+        </ParallelAnimation>
+    </children>
+</component>

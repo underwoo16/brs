@@ -19,7 +19,7 @@ describe.only("component parsing support", () => {
                 return [];
             });
 
-            let nodeDefs = await getComponentDefinitions();
+            let nodeDefs = await getComponentDefinitionMap();
             expect(nodeDefs).toEqual([]);
         });
 
