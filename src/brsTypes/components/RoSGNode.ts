@@ -8,7 +8,6 @@ import { RoAssociativeArray } from "./RoAssociativeArray";
 import { RoArray } from "./RoArray";
 import { AAMember } from "./RoAssociativeArray";
 import { Float } from "../Float";
-import { ParseJson, Val } from "../../stdlib";
 
 class Field {
     private type: string;
@@ -631,7 +630,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, child: BrsType) => {
-            return this.appendChildToParent(child) ? BrsBoolean.True : BrsBoolean.False;
+            return BrsBoolean.from(this.appendChildToParent(child));
         },
     });
 
@@ -675,7 +674,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
             returns: ValueKind.Boolean,
         },
         impl: (interpreter: Interpreter, child: BrsType) => {
-            return this.removeChildByReference(child) ? BrsBoolean.True : BrsBoolean.False;
+            return BrsBoolean.from(this.removeChildByReference(child));
         },
     });
     /* If the subject node has been added to a parent node list of children,
@@ -798,8 +797,7 @@ export class RoSGNode extends BrsComponent implements BrsValue, BrsIterable {
     });
 
     /**
-     * If the subject node has a child node at the index position, return it, otherwise
-     * return invalid.
+     * Appends the nodes specified by child_nodes to the subject node.
      */
     private appendchildren = new Callable("appendchildren", {
         signature: {

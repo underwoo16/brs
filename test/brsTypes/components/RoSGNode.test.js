@@ -1001,6 +1001,7 @@ describe("RoSGNode", () => {
                 expect(childReplaced.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child3);
             });
+
             it("returns false if index is greater than length of array", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1015,6 +1016,7 @@ describe("RoSGNode", () => {
                 expect(result.elements[0]).toEqual(child1);
                 expect(result.elements[1]).toEqual(child2);
             });
+
             it("returns true and does nothing for negative index and new element is not a child", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1029,6 +1031,7 @@ describe("RoSGNode", () => {
                 expect(result.elements[0]).toEqual(child1);
                 expect(result.elements[1]).toEqual(child2);
             });
+
             it("replaces existing child", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1043,6 +1046,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child2);
             });
+
             it("replaces existing child at same index", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1057,6 +1061,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child1);
             });
+
             it("removes existing child for negative index", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1071,6 +1076,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child1);
             });
+
             it("replaces existing child amongst 4 children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1089,6 +1095,7 @@ describe("RoSGNode", () => {
                 expect(result.elements[0]).toEqual(child1);
                 expect(result.elements[2]).toEqual(child2);
             });
+
             it("replaces existing child amongst 4 children at the end", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1128,6 +1135,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(2);
                 expect(result.elements[0]).toEqual(child3);
             });
+
             it("replaces children with new nodes that are more than number of children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1145,6 +1153,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child2);
             });
+
             it("returns false for an empty array of new nodes", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1162,6 +1171,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(1);
                 expect(result.elements[0]).toEqual(child1);
             });
+
             it("returns true and does nothing new nodes and index greater than number of elements in children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1180,6 +1190,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(2);
                 expect(result.elements[0]).toEqual(child1);
             });
+
             it("negative index rolls over to positive index and then replaces", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1198,6 +1209,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(2);
                 expect(result.elements[0]).toEqual(child4);
             });
+
             it("replaces existing nodes after negative index rollover", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1219,6 +1231,7 @@ describe("RoSGNode", () => {
                 expect(result.elements[0]).toEqual(child2);
                 expect(result.elements[1]).toEqual(child4);
             });
+
             it("removes existing nodes for index greater than number of children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1256,6 +1269,7 @@ describe("RoSGNode", () => {
                 expect(childInserted.value).toEqual(true);
                 expect(result.elements[1]).toEqual(child4);
             });
+
             it("inserts a new node at index more than number of children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1269,6 +1283,7 @@ describe("RoSGNode", () => {
                 expect(childInserted.value).toEqual(true);
                 expect(result.elements[2]).toEqual(child3);
             });
+
             it("inserts a new node with negative index", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1282,6 +1297,7 @@ describe("RoSGNode", () => {
                 expect(childInserted.value).toEqual(true);
                 expect(result.elements[2]).toEqual(child3);
             });
+
             it("inserts an existing node", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1316,6 +1332,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(4);
                 expect(result.elements[1]).toEqual(child3);
             });
+
             it("inserts new nodes at index more than number of children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1334,6 +1351,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(4);
                 expect(result.elements[2]).toEqual(child3);
             });
+
             it("inserts new and existing nodes", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1352,6 +1370,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(3);
                 expect(result.elements[0]).toEqual(child2);
             });
+
             it("inserts new and existing nodes with negative index", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1370,6 +1389,7 @@ describe("RoSGNode", () => {
                 expect(result.elements.length).toEqual(3);
                 expect(result.elements[0]).toEqual(child2);
             });
+
             it("inserts new and existing nodes with negative index with rollover", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1390,6 +1410,7 @@ describe("RoSGNode", () => {
                 expect(result.elements[0]).toEqual(child4);
                 expect(result.elements[3]).toEqual(child2);
             });
+
             it("returns false for empty array", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1418,7 +1439,9 @@ describe("RoSGNode", () => {
 
                 let existingChild = getChild.call(interpreter, new Int32(1));
                 expect(existingChild).toBeInstanceOf(RoSGNode);
+                expect(existingChild).toBe(child2);
             });
+
             it("returns invalid for index greater than number of children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChild = parent.getMethod("getchild");
@@ -1429,6 +1452,7 @@ describe("RoSGNode", () => {
                 let existingChild = getChild.call(interpreter, new Int32(5));
                 expect(existingChild).toBeInstanceOf(BrsInvalid);
             });
+
             it("returns invalid for negative index", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChild = parent.getMethod("getchild");
@@ -1458,6 +1482,7 @@ describe("RoSGNode", () => {
                 expect(childrenRemoved.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child2);
             });
+
             it("returns false for empty array", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1491,6 +1516,7 @@ describe("RoSGNode", () => {
                 expect(childrenRemoved.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child3);
             });
+
             it("returns true and does nothing for index greater than number of children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1508,6 +1534,7 @@ describe("RoSGNode", () => {
                 expect(childrenRemoved.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child1);
             });
+
             it("returns false num_children less than or equal to 0", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1542,6 +1569,7 @@ describe("RoSGNode", () => {
                 expect(childrenAppended.value).toEqual(true);
                 expect(result).toEqual(new Int32(3));
             });
+
             it("doesn't duplicate existing children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildren = parent.getMethod("getchildren");
@@ -1558,6 +1586,7 @@ describe("RoSGNode", () => {
                 expect(childrenAppended.value).toEqual(true);
                 expect(result.elements[0]).toEqual(child2);
             });
+
             it("returns false for empty array", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
@@ -1589,6 +1618,7 @@ describe("RoSGNode", () => {
                 expect(createdChildren.elements.length).toEqual(2);
                 expect(result).toEqual(new Int32(3));
             });
+
             it("doesn't create if number to create is less than or equal to 0", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
@@ -1620,6 +1650,7 @@ describe("RoSGNode", () => {
                 expect(childRemoved.value).toEqual(true);
                 expect(result).toEqual(new Int32(0));
             });
+
             it("returns true for negative index", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
@@ -1632,6 +1663,7 @@ describe("RoSGNode", () => {
                 expect(childRemoved.value).toEqual(true);
                 expect(result).toEqual(new Int32(1));
             });
+
             it("returns false for index greater than number of children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
@@ -1658,6 +1690,7 @@ describe("RoSGNode", () => {
                 expect(childRemoved.value).toEqual(true);
                 expect(result).toEqual(new Int32(0));
             });
+
             it("returns true for negative index", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
@@ -1670,6 +1703,7 @@ describe("RoSGNode", () => {
                 expect(childRemoved.value).toEqual(true);
                 expect(result).toEqual(new Int32(1));
             });
+
             it("returns false for index greater than number of children", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
@@ -1696,6 +1730,7 @@ describe("RoSGNode", () => {
                 expect(childReparented.value).toEqual(true);
                 expect(result).toEqual(child2);
             });
+
             it("doesn't reparent to itself", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getParent = child1.getMethod("getparent");
@@ -1708,6 +1743,7 @@ describe("RoSGNode", () => {
                 expect(childReparented.value).toEqual(false);
                 expect(result).toEqual(parent);
             });
+
             it("child relation is removed from previous parent", () => {
                 let appendChild = parent.getMethod("appendchild");
                 let getChildCount = parent.getMethod("getchildcount");
